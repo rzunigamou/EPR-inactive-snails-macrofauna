@@ -10,7 +10,7 @@
 # it looks like R vegan requires 'the community data matrix with samples as rows and species as column'
 
 # EDIT TO WORK WITH "supp_Table_Snail_ms" RZM 10/03/2024
-# google sheet supp_Table_Snail_ms into csv
+# downloaded google sheet supp_Table_Snail_ms.xlsx and opened in excel to save as csv - 10/03/2024
 
 library(dplyr)
 library(data.table)
@@ -76,7 +76,7 @@ EFAplot <- EFAplot |>
   ))
 EFAplot$Site <- factor(EFAplot$Site)
 EFAplot$RockType <- factor(EFAplot$RockType, levels = c("Yellow","Rusty", "Rusty/Green" ))
-EFAplot.mean=aggregate(EFAplot[,1:2],list(group = EFAplot$Site), mean)
+# EFAplot.mean=aggregate(EFAplot[,1:2],list(group = EFAplot$Site), mean) # ELLIPSES
 
 #  ELLIPSES
 # veganCovEllipse<-function(cov, center = c(0, 0), scale = 1, npoints = 100) 
