@@ -75,7 +75,7 @@ EFAplot <- EFAplot |>
     str_detect(Site_OG, "Lucky") ~ "Lucky's Mound"
   ))
 EFAplot$Site <- factor(EFAplot$Site)
-EFAplot$RockType <- factor(EFAplot$RockType)
+EFAplot$RockType <- factor(EFAplot$RockType, levels = c("Yellow","Rusty", "Rusty/Green" ))
 EFAplot.mean=aggregate(EFAplot[,1:2],list(group = EFAplot$Site), mean)
 
 #  ELLIPSES
@@ -94,15 +94,17 @@ EFAplot.mean=aggregate(EFAplot[,1:2],list(group = EFAplot$Site), mean)
 # }
 
 ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) + 
-  geom_point(aes(shape = Site, color = RockType), size = 5) + xlim(-1.25,1.25) + ylim(-1.25,1.25) +
+  geom_point(aes(shape = Site, color = RockType), size = 4) + xlim(-1.25,1.25) + ylim(-1.25,1.25) +
+  coord_fixed()+
 #  geom_path(data=df_ell, aes(x=MDS1, y=MDS2, linetype = Site), size=0.6)+ #ELLIPSES
 #  scale_linetype_manual(values= c("dashed", "dotted"))+ #ELLIPSES
-  scale_color_manual(values = c("brown", "aquamarine2", "orange2")) +
+  scale_color_manual(values = c( "orange2", "brown", "aquamarine2")) +
   theme_bw() + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   theme(panel.border = element_rect(fill=NA, colour="black", size = 1)) +
   theme(axis.text = element_text(colour="black", size = 12),
-        axis.title = element_text(colour="black", size = 14))
+        axis.title = element_text(colour="black", size = 14))+
+  guides(color = guide_legend(override.aes = list(shape = 15, size = 4)))
 #  guides(linetype = guide_legend(order=1), shape = guide_legend(order =2)) #ELLIPSES
 
 # GGSAVE
@@ -113,7 +115,7 @@ ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) +
   filename = 'inactiveNMDS.tiff',
   plot = last_plot(),
   device = NULL,
-  path = "C:\\Users\\Rodrigo Zuniga\\Documents\\github\\EPR-inactive-snails\\", # output files in separate folder
+  path = "C:\\Users\\Rodrigo Zuniga\\Documents\\github\\EPR-inactive-snails-macrofauna\\", # output files in separate folder
   scale = 1,
   width = NA,
   height = NA,
