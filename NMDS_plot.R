@@ -19,11 +19,12 @@ library(stringr)
 library(ggplot2)
 
 #input <- read.csv("Gastropod_Counts_Assembled_At_sea_20240926_edited.csv") - OLD SPREADSHEET
-input <- read.csv("supp_Table_Snail_ms.csv")
+input <- read.csv("C:/Users/sbeaulieu/Downloads/supp_Table_Snail_ms.csv") # Digo local file
+
 data <- select(input, -(starts_with("X")))
 # remove rows with taxa not fully assessed for presence absence
-data <- filter(data, Feature != "Copepod")
-data <- filter(data, Feature != "Cauliflower-like animal")
+data <- filter(data, is.na(Feature)|Feature != "Copepod")
+data <- filter(data, is.na(Feature)|Feature != "Cauliflower-like animal")
 
 # remove extraneous metadata rows
 data <- data[-c(1,2,3,4,6), ]
@@ -70,11 +71,13 @@ plot(data_nmds, display = "sites", type="t")
 EFAplot <- data.frame(NMDS1 = data_nmds$points[,1], NMDS2 = data_nmds$points[,2], Site_OG = sites, RockType = Rock_color)
 # add abbreviated site factors
 EFAplot <- EFAplot |> 
-  mutate(Site = case_when(
+#  mutate(Site = case_when(
+  mutate(Feature = case_when(
     str_detect(Site_OG, "Sentry") ~ "Sentry Spire",
     str_detect(Site_OG, "Lucky") ~ "Lucky's Mound"
   ))
-EFAplot$Site <- factor(EFAplot$Site)
+# EFAplot$Site <- factor(EFAplot$Site)
+EFAplot$Feature <- factor(EFAplot$Feature)
 EFAplot$RockType <- factor(EFAplot$RockType, levels = c("Yellow","Rusty", "Rusty/Green" ))
 # EFAplot.mean=aggregate(EFAplot[,1:2],list(group = EFAplot$Site), mean) # ELLIPSES
 
@@ -93,13 +96,17 @@ EFAplot$RockType <- factor(EFAplot$RockType, levels = c("Yellow","Rusty", "Rusty
 #                                 ,Site=g))
 # }
 
+# trying a suggestion from stack overflow to set base_size
+figures_base_size = 7
+
 ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) + 
-  geom_point(aes(shape = Site, color = RockType), size = 4) + xlim(-1.25,1.25) + ylim(-1.25,1.25) +
+#  geom_point(aes(shape = Site, color = RockType), size = 4) + xlim(-1.25,1.25) + ylim(-1.25,1.25) +
+  geom_point(aes(shape = Feature, color = RockType), size = 4) + xlim(-1.25,1.25) + ylim(-1.25,1.25) +
   coord_fixed()+
 #  geom_path(data=df_ell, aes(x=MDS1, y=MDS2, linetype = Site), size=0.6)+ #ELLIPSES
 #  scale_linetype_manual(values= c("dashed", "dotted"))+ #ELLIPSES
   scale_color_manual(values = c( "orange2", "brown", "aquamarine2")) +
-  theme_bw() + 
+  theme_bw(base_size = figures_base_size) + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   theme(panel.border = element_rect(fill=NA, colour="black", size = 1)) +
   theme(axis.text = element_text(colour="black", size = 12),
@@ -109,17 +116,19 @@ ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) +
 
 # GGSAVE
 
-#  "nmds_fauna_Fig5b_2024-07-17.tif",
 #   "nmds_fauna_Fig4b_2024-06-28.tif",
   ggsave(
-  filename = 'inactiveNMDS.tiff',
+#  filename = 'NMDS_inactive_bs_90_20250114.tiff',
+  filename = 'NMDS_inactive_bs_90_20250114.eps',
   plot = last_plot(),
   device = NULL,
-  path = "C:\\Users\\Rodrigo Zuniga\\Documents\\github\\EPR-inactive-snails-macrofauna\\", # output files in separate folder
+  path = "C:\\Users\\sbeaulieu\\Desktop\\", # output files in separate folder
   scale = 1,
-  width = NA,
+#  width = NA,
+  width = 90, # Single column 90 mm
   height = NA,
-  units = c("in", "cm", "mm", "px"),
+#  units = c("in", "cm", "mm", "px"),
+  units = "mm",
   dpi = 500,
   limitsize = TRUE,
   bg = NULL,

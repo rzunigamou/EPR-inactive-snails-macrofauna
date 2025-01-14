@@ -1,5 +1,5 @@
 # script for revised NMDS for Macrofauna paper
-# 2025-01-13 Stace Beaulieu
+# 2025-01-14 Stace Beaulieu
 # uses manually created Merged_Per&Sul tab from Periphery_EcolMon2003_Block&Sieve.xlsx downloaded from google drive
 
 library(readxl)
@@ -49,13 +49,17 @@ EFAplot <- EFAplot |>
   ))
 EFAplot$Feature <- factor(EFAplot$Feature)
 
+# trying a suggestion from stack overflow to set base_size
+figures_base_size = 7
+
 # need Lucky's Mound shape 16 filled circle
 # need Sentry Spire shape 17 filled triangle point-up
+
 ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) + 
   geom_point(aes(shape = Feature), size = 4) + xlim(-2.4,2.4) + ylim(-2.4,2.4) +
   coord_fixed()+
   scale_shape_manual(values = c(5, 8, 16, 17, 6)) +
-  theme_bw() + 
+  theme_bw(base_size = figures_base_size) + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   theme(panel.border = element_rect(fill=NA, colour="black", size = 1)) +
   theme(axis.text = element_text(colour="black", size = 12),
@@ -64,18 +68,21 @@ ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) +
 
 # GGSAVE
 
-ggsave(
-  filename = 'NMDS_Merged_Per&Sul_20250113.tiff',
-  plot = last_plot(),
-  device = NULL,
-  path = "C:\\Users\\sbeaulieu\\Desktop\\", # output files in separate folder
-  scale = 1,
-  width = NA,
-  height = NA,
-  units = c("in", "cm", "mm", "px"),
-  dpi = 500,
-  limitsize = TRUE,
-  bg = NULL,
-)
+# ggsave(
+# #  filename = 'NMDS_Merged_Per&Sul_bs_90_20250114.tiff',
+#   filename = 'NMDS_Merged_Per&Sul_bs_90_20250114.eps',
+#   plot = last_plot(),
+#   device = NULL,
+#   path = "C:\\Users\\sbeaulieu\\Desktop\\", # output files in separate folder
+#   scale = 1,
+# #  width = NA,
+#   width = 90, # Single column 90 mm
+#   height = NA,
+# #  units = c("in", "cm", "mm", "px"),
+#   units = "mm",
+#   dpi = 500,
+#   limitsize = TRUE,
+#   bg = NULL,
+# )
 
 
