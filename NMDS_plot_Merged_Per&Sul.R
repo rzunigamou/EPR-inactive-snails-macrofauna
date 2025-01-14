@@ -49,6 +49,11 @@ EFAplot <- EFAplot |>
   ))
 EFAplot$Feature <- factor(EFAplot$Feature)
 
+# view order that will go into legend
+levels(EFAplot$Feature)
+# reorder for legend labels
+EFAplot$Feature <- factor(EFAplot$Feature, levels = c("Lucky's Mound", "Sentry Spire", "Biovent", "East Wall", "Worm Hole"))
+
 # trying a suggestion from stack overflow to set base_size
 figures_base_size = 7
 
@@ -58,7 +63,7 @@ figures_base_size = 7
 ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) + 
   geom_point(aes(shape = Feature), size = 4) + xlim(-2.4,2.4) + ylim(-2.4,2.4) +
   coord_fixed()+
-  scale_shape_manual(values = c(5, 8, 16, 17, 6)) +
+  scale_shape_manual(values = c(16, 17, 5, 8, 6)) +
   theme_bw(base_size = figures_base_size) + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   theme(panel.border = element_rect(fill=NA, colour="black", size = 1)) +
@@ -69,8 +74,8 @@ ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) +
 # GGSAVE
 
 # ggsave(
-# #  filename = 'NMDS_Merged_Per&Sul_bs_90_20250114.tiff',
-#   filename = 'NMDS_Merged_Per&Sul_bs_90_20250114.eps',
+#   filename = 'NMDS_Merged_Per&Sul_bs_90_20250114_1604.tiff',
+# #  filename = 'NMDS_Merged_Per&Sul_bs_90_20250114_1604.eps',
 #   plot = last_plot(),
 #   device = NULL,
 #   path = "C:\\Users\\sbeaulieu\\Desktop\\", # output files in separate folder
