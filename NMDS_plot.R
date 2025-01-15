@@ -12,6 +12,9 @@
 # EDIT TO WORK WITH "supp_Table_Snail_ms" RZM 10/03/2024
 # downloaded google sheet supp_Table_Snail_ms.xlsx and opened in excel to save as csv - 10/03/2024
 
+# 2025-01-15 edited Digo local file
+# removed two instances of "Rusty/" so that the category would just be "Green"
+
 library(dplyr)
 library(data.table)
 library(vegan)
@@ -19,7 +22,7 @@ library(stringr)
 library(ggplot2)
 
 #input <- read.csv("Gastropod_Counts_Assembled_At_sea_20240926_edited.csv") - OLD SPREADSHEET
-input <- read.csv("C:/Users/sbeaulieu/Downloads/supp_Table_Snail_ms.csv") # Digo local file
+input <- read.csv("C:/Users/sbeaulieu/Downloads/Supp_Table_Snail_ms_Green.csv") # Digo local file
 
 data <- select(input, -(starts_with("X")))
 # remove rows with taxa not fully assessed for presence absence
@@ -78,7 +81,9 @@ EFAplot <- EFAplot |>
   ))
 # EFAplot$Site <- factor(EFAplot$Site)
 EFAplot$Feature <- factor(EFAplot$Feature)
-EFAplot$RockType <- factor(EFAplot$RockType, levels = c("Yellow","Rusty", "Rusty/Green" ))
+# EFAplot$RockType <- factor(EFAplot$RockType, levels = c("Yellow","Rusty", "Rusty/Green" ))
+EFAplot$RockType <- factor(EFAplot$RockType, levels = c("Yellow","Rusty", "Green" ))
+
 # EFAplot.mean=aggregate(EFAplot[,1:2],list(group = EFAplot$Site), mean) # ELLIPSES
 
 #  ELLIPSES
@@ -117,27 +122,22 @@ ggplot(data = EFAplot, aes(x = NMDS1, y = NMDS2)) +
 # GGSAVE
 
 #   "nmds_fauna_Fig4b_2024-06-28.tif",
-  ggsave(
-#  filename = 'NMDS_inactive_bs_90_20250114.tiff',
-  filename = 'NMDS_inactive_bs_90_20250114.eps',
-  plot = last_plot(),
-  device = NULL,
-  path = "C:\\Users\\sbeaulieu\\Desktop\\", # output files in separate folder
-  scale = 1,
-#  width = NA,
-  width = 90, # Single column 90 mm
-  height = NA,
-#  units = c("in", "cm", "mm", "px"),
-  units = "mm",
-  dpi = 500,
-  limitsize = TRUE,
-  bg = NULL,
-)
-
-
-
-
-
+#   ggsave(
+#   filename = 'NMDS_inactive_bs_90_20250115.tiff',
+# #  filename = 'NMDS_inactive_bs_90_20250115.eps',
+#   plot = last_plot(),
+#   device = NULL,
+#   path = "C:\\Users\\sbeaulieu\\Desktop\\", # output files in separate folder
+#   scale = 1,
+# #  width = NA,
+#   width = 90, # Single column 90 mm
+#   height = NA,
+# #  units = c("in", "cm", "mm", "px"),
+#   units = "mm",
+#   dpi = 500,
+#   limitsize = TRUE,
+#   bg = NULL,
+# )
 
 
 
